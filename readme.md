@@ -25,7 +25,7 @@
 ***ORTAK KULLANILACAK FEATURE STEPLERİ***
 
 - SIGN IN STEPS
->   User goes to the easybusticket homepage. 
+>   altaUser goes to the easybusticket homepage. 
 >
 >   User clicks on Sign In button and displays the Sign In page.
 > 
@@ -36,3 +36,8 @@
 >   User clicks the Login button.
 > 
 >   User displays the Dashboard page.
+
+- IVIR ZIVIR
+>   User waits for 1 seconds.
+> 
+>   User closes the page.
