@@ -6,12 +6,7 @@ import io.cucumber.java.en.Then;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import io.cucumber.java.en.But;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 import pages.user.UserSignIn;
@@ -32,7 +27,6 @@ public class EasyBusTicketUser {
     UserSignIn userSignIn = new UserSignIn();
     UserSignUp userSignUp= new UserSignUp();
     SoftAssert softAssert = new SoftAssert();
-    UserSignUp userSignUp = new UserSignUp();
 
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
@@ -222,9 +216,10 @@ public class EasyBusTicketUser {
 
     @Then("Verify that user can't register {string}")
     public void verifyThatUserCanTRegister(String alert) {
-        String expectedAlert=alert;
-        String actualAlert=userSignUp.alert.getText();
-        softAssert.assertEquals(actualAlert,expectedAlert,"user can register3");
+        String expectedAlert = alert;
+        String actualAlert = userSignUp.alert.getText();
+        softAssert.assertEquals(actualAlert, expectedAlert, "user can register3");
+    }
       
     @Then("Verify that header is visible successfully")
     public void verify_that_header_is_visible_successfully() {
