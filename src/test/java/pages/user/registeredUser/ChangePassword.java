@@ -24,4 +24,8 @@ public class ChangePassword {
 
     @FindBy(xpath = "//*[text()='Password changes successfully']")
     public WebElement  labelPasswordAlert;
+
+    @FindBy(xpath = "//*[text()='The password confirmation does not match.']")
+    public WebElement  labelPasswordAlert2;
+
 }
