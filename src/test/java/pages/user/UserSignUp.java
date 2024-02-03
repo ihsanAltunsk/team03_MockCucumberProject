@@ -60,4 +60,7 @@ public class UserSignUp {
 
     @FindBy(xpath = "//*[text()='The password must contain at least one symbol.']")
     public WebElement alertInvalidPassword4;
+
+    @FindBy(xpath = "//*[@class='iziToast-message slideIn']")
+    public WebElement alert;
 }

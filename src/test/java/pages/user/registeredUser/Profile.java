@@ -11,7 +11,7 @@ public class Profile {
 
 
     //profile
-    @FindBy(xpath = "//li[4][1]")
+    @FindBy(xpath = "(//li[4])[1]")
     public WebElement liProfile;
 
     @FindBy(xpath = "//*[@id='InputFirstname']")
