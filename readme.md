@@ -36,3 +36,8 @@
 >   User clicks the Login button.
 > 
 >   User displays the Dashboard page.
+
+- IVIR ZIVIR
+>   User waits for 1 seconds.
+> 
+>   User closes the page.

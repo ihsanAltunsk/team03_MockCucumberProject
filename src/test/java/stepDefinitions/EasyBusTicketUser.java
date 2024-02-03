@@ -1,21 +1,34 @@
 package stepDefinitions;
 
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.But;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 import pages.user.UserSignIn;
 import pages.user.UserSignUp;
+import pages.user.registeredUser.ChangePassword;
+import pages.user.registeredUser.Profile;
 import pages.visitor.VisitorHomePage;
 import utilities.ConfigReader;
 import utilities.Driver;
+import utilities.ReusableMethods;
 
 public class EasyBusTicketUser {
+    Actions actions = new Actions(Driver.getDriver());
+    Profile profile = new Profile();
+    ChangePassword changePassword = new ChangePassword();
     VisitorHomePage visitorHomePage = new VisitorHomePage();
     UserSignIn userSignIn = new UserSignIn();
     UserSignUp userSignUp= new UserSignUp();
     SoftAssert softAssert = new SoftAssert();
     String actualUrl,expectedUrl;
+    UserSignUp userSignUp = new UserSignUp();
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
         Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
@@ -48,7 +61,84 @@ public class EasyBusTicketUser {
         actualUrl = Driver.getDriver().getCurrentUrl();
         expectedUrl = "https://qa.easybusticket.com/user/dashboard";
         softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Dashboard' page!");
+    }
+    @Then("User verifies that -These credentials do not match our records.- error text appeared.")
+    public void userVerifiesThatTheseCredentialsDoNotMatchOurRecordsErrorTextAppeared() {
+        String actualError = userSignIn.labelError.getText();
+        String expectedError = "These credentials do not match our records.";
+        softAssert.assertEquals(actualError, expectedError, "Error text DID NOT appear!");
+    }
 
+    @Then("User closes the page.")
+    public void userClosesThePage() {
+        softAssert.assertAll();
+        Driver.closeDriver();
+    }
+
+    @But("User waits for {int} seconds.")
+    public void userWaitsForSeconds(int duration) {
+        try {
+            Thread.sleep(duration * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Then("User clicks the Profile button and clicks Change Password from the selection menu.")
+    public void userClicksTheProfileButtonAndClicksChangePasswordFromTheSelectionMenu() {
+        actions.moveToElement(profile.liProfile).perform();
+        ReusableMethods.bekle(1);
+        profile.ChangePassword.click();
+    }
+
+    @And("User displays the Change Password page.")
+    public void userDisplaysTheChangePasswordPageAnd() {
+        String actualUrl = Driver.getDriver().getCurrentUrl();
+        String expectedUrl = "https://qa.easybusticket.com/user/change-password";
+        softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Change Password' page!");    }
+
+    @And("User clicks on Change Password button and verifies that Password changes succesfully text appeared.")
+    public void userClicksOnChangePasswordButtonAndVerifiesThatPasswordChangesSuccesfullyTextAppeared() {
+        changePassword.changePasswordButton.click();
+
+        String actualText = changePassword.labelPasswordAlert.getText();
+        String expectedText = "Password changes succesfully";
+        softAssert.assertEquals(actualText, expectedText, "'Password changes succesfully' text DID NOT appear!");
+    }
+
+    @Then("User clicks Current Password box and enters {string} password.")
+    public void userClicksCurrentPasswordBoxAndEntersPassword(String password) {
+        changePassword.currentPasswordBox.sendKeys(ConfigReader.getProperty(password));
+    }
+
+    @And("User clicks Password box and enters {string} password.")
+    public void userClicksPasswordBoxAndEntersPassword(String password) {
+        changePassword.passwordBox.sendKeys(ConfigReader.getProperty(password));
+    }
+
+    @And("User clicks Confirm Password box and enters {string} password.")
+    public void userClicksConfirmPasswordBoxAndEntersPassword(String password) {
+        changePassword.confirmPasswordBox.sendKeys(ConfigReader.getProperty(password));
+    }
+
+    @And("User clicks on Change Password button and verifies that The password confirmation does not match appeared.")
+    public void userClicksOnChangePasswordButtonAndVerifiesThatThePasswordConfirmationDoesNotMatchAppeared() {
+        changePassword.changePasswordButton.click();
+        ReusableMethods.bekle(1);
+        String actualText = changePassword.labelPasswordAlert2.getText();
+        String expectedText = "The password confirmation does not match.";
+        softAssert.assertEquals(actualText, expectedText, "'The password confirmation does not match.' text DID NOT appear!");
+    }
+
+    @Given("Visitor goes to the easybusticket homepage.")
+    public void visitor_goes_to_the_easybusticket_homepage() {
+            Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
+    }
+    @Then("Verify that home page is visible successfully")
+    public void verify_that_home_page_is_visible_successfully() {
+        actualUrl = Driver.getDriver().getCurrentUrl();
+        expectedUrl = "https://qa.easybusticket.com/";
+        softAssert.assertEquals(actualUrl, expectedUrl, "Visitor DID NOT display the 'Sign In' page!");
         softAssert.assertAll();
     }
 
@@ -126,5 +216,19 @@ public class EasyBusTicketUser {
         String expectedAlert=alert;
         String actualAlert=userSignUp.alert.getText();
         softAssert.assertEquals(actualAlert,expectedAlert,"user can register3");
+      
+    @Then("Verify that header is visible successfully")
+    public void verify_that_header_is_visible_successfully() {
+        softAssert.assertTrue(visitorHomePage.singInButton.isDisplayed(),"header isn't visible successfully");
+        softAssert.assertAll();
+    }
+    @Then("Visitor homapage header displays web elements")
+    public void visitorHomapageHeaderDisplaysWebElements() {
+        SoftAssert softAssert = new SoftAssert();
+        VisitorHomePage visitorHomePage=new VisitorHomePage();
+        Driver.getDriver().get("https://qa.easybusticket.com");
+        for (int i = 0; i < 20 ; i++) {
+            softAssert.assertTrue(visitorHomePage.listr.get(i).isDisplayed());
+        }
     }
 }
