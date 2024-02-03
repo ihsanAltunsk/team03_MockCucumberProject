@@ -25,7 +25,7 @@
 ***ORTAK KULLANILACAK FEATURE STEPLERİ***
 
 - SIGN IN STEPS
->   altaUser goes to the easybusticket homepage. 
+>   User goes to the easybusticket homepage. 
 >
 >   User clicks on Sign In button and displays the Sign In page.
 > 
