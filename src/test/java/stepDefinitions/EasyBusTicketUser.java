@@ -48,4 +48,30 @@ public class EasyBusTicketUser {
 
         softAssert.assertAll();
     }
+
+    @Given("Visitor goes to the easybusticket homepage.")
+    public void visitor_goes_to_the_easybusticket_homepage() {
+            Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
+    }
+    @Then("Verify that home page is visible successfully")
+    public void verify_that_home_page_is_visible_successfully() {
+        actualUrl = Driver.getDriver().getCurrentUrl();
+        expectedUrl = "https://qa.easybusticket.com/";
+        softAssert.assertEquals(actualUrl, expectedUrl, "Visitor DID NOT display the 'Sign In' page!");
+        softAssert.assertAll();
+    }
+    @Then("Verify that header is visible successfully")
+    public void verify_that_header_is_visible_successfully() {
+        softAssert.assertTrue(visitorHomePage.singInButton.isDisplayed(),"header isn't visible successfully");
+        softAssert.assertAll();
+    }
+    @Then("Visitor homapage header displays web elements")
+    public void visitorHomapageHeaderDisplaysWebElements() {
+        SoftAssert softAssert = new SoftAssert();
+        VisitorHomePage visitorHomePage=new VisitorHomePage();
+        Driver.getDriver().get("https://qa.easybusticket.com");
+        for (int i = 0; i < 20 ; i++) {
+            softAssert.assertTrue(visitorHomePage.listr.get(i).isDisplayed());
+        }
+    }
 }
