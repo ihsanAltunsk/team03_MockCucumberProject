@@ -22,3 +22,17 @@
 >
 > -Main branch'inde degisiklik gerekiyorsa lead ile iletisime gecilmeli
 ***
+***ORTAK KULLANILACAK FEATURE STEPLERİ***
+
+- SIGN IN STEPS
+>   User goes to the easybusticket homepage. 
+>
+>   User clicks on Sign In button and displays the Sign In page.
+> 
+>   User clicks on Username box and enters a valid "ihsanUsername".
+> 
+>   User clicks on Password box and enters a valid "ihsanPassword".
+> 
+>   User clicks the Login button.
+> 
+>   User displays the Dashboard page.
