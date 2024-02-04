@@ -9,6 +9,8 @@ import io.cucumber.java.en.But;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
+import pages.admin.AdminDashboard;
+import pages.admin.AdminSignIn;
 import pages.user.UserSignIn;
 import pages.user.UserSignUp;
 import pages.user.registeredUser.ChangePassword;
@@ -19,7 +21,7 @@ import utilities.Driver;
 import utilities.ReusableMethods;
 
 public class EasyBusTicketUser {
-    String actualUrl,expectedUrl;
+    String actualUrl, expectedUrl, actualError, expectedError, actualText, expectedText;
     Actions actions = new Actions(Driver.getDriver());
     Profile profile = new Profile();
     ChangePassword changePassword = new ChangePassword();
@@ -65,10 +67,11 @@ public class EasyBusTicketUser {
         expectedUrl = "https://qa.easybusticket.com/user/dashboard";
         softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Dashboard' page!");
     }
+
     @Then("User verifies that -These credentials do not match our records.- error text appeared.")
     public void userVerifiesThatTheseCredentialsDoNotMatchOurRecordsErrorTextAppeared() {
-        String actualError = userSignIn.labelError.getText();
-        String expectedError = "These credentials do not match our records.";
+        actualError = userSignIn.labelError.getText();
+        expectedError = "These credentials do not match our records.";
         softAssert.assertEquals(actualError, expectedError, "Error text DID NOT appear!");
     }
 
@@ -87,56 +90,48 @@ public class EasyBusTicketUser {
         }
     }
 
-    @Then("User clicks the Profile button and clicks Change Password from the selection menu.")
+    @Then("User clicks the -Profile- button and clicks -Change Password- from the selection menu.")
     public void userClicksTheProfileButtonAndClicksChangePasswordFromTheSelectionMenu() {
         actions.moveToElement(profile.liProfile).perform();
         ReusableMethods.bekle(1);
         profile.ChangePassword.click();
     }
 
-    @And("User displays the Change Password page.")
+    @And("User displays the -Change Password- page.")
     public void userDisplaysTheChangePasswordPageAnd() {
-        String actualUrl = Driver.getDriver().getCurrentUrl();
-        String expectedUrl = "https://qa.easybusticket.com/user/change-password";
+        actualUrl = Driver.getDriver().getCurrentUrl();
+        expectedUrl = "https://qa.easybusticket.com/user/change-password";
         softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Change Password' page!");    }
 
-    @And("User clicks on Change Password button and verifies that Password changes succesfully text appeared.")
+    @And("User clicks on -Change Password- button and verifies that -Password changes succesfully- text appeared.")
     public void userClicksOnChangePasswordButtonAndVerifiesThatPasswordChangesSuccesfullyTextAppeared() {
         changePassword.changePasswordButton.click();
 
-        String actualText = changePassword.labelPasswordAlert.getText();
-        String expectedText = "Password changes succesfully";
+        actualText = changePassword.labelPasswordAlert.getText();
+        expectedText = "Password changes succesfully";
         softAssert.assertEquals(actualText, expectedText, "'Password changes succesfully' text DID NOT appear!");
     }
 
-    @Then("User clicks Current Password box and enters {string} password.")
+    @Then("User clicks -Current Password- box and enters {string} password.")
     public void userClicksCurrentPasswordBoxAndEntersPassword(String password) {
         changePassword.currentPasswordBox.sendKeys(ConfigReader.getProperty(password));
     }
 
-    @And("User clicks Password box and enters {string} password.")
+    @And("User clicks -Password- box and enters {string} password.")
     public void userClicksPasswordBoxAndEntersPassword(String password) {
         changePassword.passwordBox.sendKeys(ConfigReader.getProperty(password));
     }
 
-    @And("User clicks Confirm Password box and enters {string} password.")
+    @And("User clicks -Confirm Password- box and enters {string} password.")
     public void userClicksConfirmPasswordBoxAndEntersPassword(String password) {
         changePassword.confirmPasswordBox.sendKeys(ConfigReader.getProperty(password));
-    }
-
-    @And("User clicks on Change Password button and verifies that The password confirmation does not match appeared.")
-    public void userClicksOnChangePasswordButtonAndVerifiesThatThePasswordConfirmationDoesNotMatchAppeared() {
-        changePassword.changePasswordButton.click();
-        ReusableMethods.bekle(1);
-        String actualText = changePassword.labelPasswordAlert2.getText();
-        String expectedText = "The password confirmation does not match.";
-        softAssert.assertEquals(actualText, expectedText, "'The password confirmation does not match.' text DID NOT appear!");
     }
 
     @Given("Visitor goes to the easybusticket homepage.")
     public void visitor_goes_to_the_easybusticket_homepage() {
             Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
     }
+
     @Then("Verify that home page is visible successfully")
     public void verify_that_home_page_is_visible_successfully() {
         actualUrl = Driver.getDriver().getCurrentUrl();
@@ -173,6 +168,7 @@ public class EasyBusTicketUser {
         Select selectcountry=new Select(userSignUp.countryBox);
         selectcountry.selectByValue(ConfigReader.getProperty("humeyraSignUpCountry"));
     }
+
     @Then("User clicks on mobile box and enter a valid mobile number {string}")
     public void userClicksOnMobileBoxAndEnterAValidMobileNumber(String mobileNumber) {
         userSignUp.mobileBox.click();
@@ -190,7 +186,6 @@ public class EasyBusTicketUser {
         userSignUp.emailBox.click();
         userSignUp.emailBox.sendKeys(ConfigReader.getProperty("humeyraSignUpEmail"));
     }
-
 
     @Then("User clicks on password box and enter invalid password {string}")
     public void userClicksOnPasswordBoxAndEnterInvalidPassword(String invalidPassword) {
@@ -216,9 +211,9 @@ public class EasyBusTicketUser {
 
     @Then("Verify that user can't register {string}")
     public void verifyThatUserCanTRegister(String alert) {
-        String expectedAlert = alert;
-        String actualAlert = userSignUp.alert.getText();
-        softAssert.assertEquals(actualAlert, expectedAlert, "user can register3");
+        expectedError = alert;
+        actualError = userSignUp.alert.getText();
+        softAssert.assertEquals(expectedError, actualError, "user can register3");
     }
       
     @Then("Verify that header is visible successfully")
@@ -247,10 +242,7 @@ public class EasyBusTicketUser {
     @Then("User sees {string} under the {string} Menu.")
     public void user_sees_under_the_menu(String string, String string2) {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
-
-
         javascriptExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-
         Assert.assertTrue(visitorHomePage.footerabout.isDisplayed());
     }
 
@@ -269,21 +261,26 @@ public class EasyBusTicketUser {
         visitorHomePage.footercontact.click();
     }
 
-
     @Then("clicks on the privacy policy in the footer.")
     public void clicks_on_the_privacy_policy_in_the_footer() {
         visitorHomePage.footerprivacypolicy.click();
-
-
     }
       
     @Then("Visitor homapage header displays web elements")
     public void visitorHomapageHeaderDisplaysWebElements() {
-        SoftAssert softAssert = new SoftAssert();
-        VisitorHomePage visitorHomePage=new VisitorHomePage();
         Driver.getDriver().get("https://qa.easybusticket.com");
         for (int i = 0; i < 20 ; i++) {
             softAssert.assertTrue(visitorHomePage.listr.get(i).isDisplayed());
         }
+    }
+
+    @And("User clicks on Change Password button and verifies that {string} appeared.")
+    public void userClicksOnChangePasswordButtonAndVerifiesThatAppeared(String error) {
+        changePassword.changePasswordButton.click();
+        ReusableMethods.bekle(1);
+
+        actualText = changePassword.labelPasswordAlert2.getText();
+        expectedText = ConfigReader.getProperty(error);
+        softAssert.assertEquals(actualText, expectedText, "'The password confirmation does not match.' text DID NOT appear!");
     }
 }
