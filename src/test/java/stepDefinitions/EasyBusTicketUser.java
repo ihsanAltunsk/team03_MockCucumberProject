@@ -13,6 +13,7 @@ import pages.user.UserSignIn;
 import pages.user.UserSignUp;
 import pages.user.registeredUser.ChangePassword;
 import pages.user.registeredUser.Profile;
+import pages.visitor.VisitorContact;
 import pages.visitor.VisitorHomePage;
 import utilities.ConfigReader;
 import utilities.Driver;
@@ -27,7 +28,7 @@ public class EasyBusTicketUser {
     UserSignIn userSignIn = new UserSignIn();
     UserSignUp userSignUp= new UserSignUp();
     SoftAssert softAssert = new SoftAssert();
-
+    VisitorContact visitorContact =new VisitorContact();
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
         Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
@@ -286,4 +287,81 @@ public class EasyBusTicketUser {
             softAssert.assertTrue(visitorHomePage.listr.get(i).isDisplayed());
         }
     }
-}
+
+
+    @Then("User must click on \"Allow Cookies\"button.")
+    public void user_must_click_on_allow_cookies_button() {
+        visitorHomePage.cookiesAllow.click();
+    }
+    @Then("User clicks {string} button on Header menu.")
+    public void user_clicks_button_on_header_menu(String string) {
+        visitorHomePage.HeaderContact.click();
+    }
+    @Then("Click on contact from the footer menu.")
+    public void click_on_contact_from_the_footer_menu() {
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
+
+
+        javascriptExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+
+        visitorHomePage.footerContacınfo.click();
+    }
+
+    @Then("User clicks the allow cookies button.")
+    public void user_clicks_the_allow_cookies_button() {
+        visitorHomePage.cookiesAllow.click();
+    }
+    @Then("User should be landed on {string} page.")
+    public void user_should_be_landed_on_page(String string) {
+        visitorHomePage.HeaderContact.click();
+    }
+    @Then("User should be able to see address, phone, e-meail infos.")
+    public void user_should_be_able_to_see_address_phone_e_meail_infos() {
+        Assert.assertTrue(visitorHomePage.HeaderEmailAddress.isDisplayed());
+        Assert.assertTrue(visitorHomePage.HeaderPhoneNumber.isDisplayed());
+        Assert.assertTrue(visitorHomePage.HeaderEmailAddress.isDisplayed());
+    }
+    @Then("User clicks phone number.")
+    public void user_clicks_phone_number() {
+        visitorHomePage. HeaderPhoneNumber.click();
+    }
+    @Then("User displays phone alert.")
+    public void user_displays_phone_alert() {
+        Assert.assertTrue(visitorHomePage. phoneAlert.isDisplayed());
+    }
+
+
+    @Given("User clicks e-mail string.")
+    public void user_clicks_e_mail_string() {
+        visitorHomePage.HeaderEmailAddress.click();
+    }
+    @Given("User displays e-mail alert.")
+    public void user_displays_e_mail_alert() {
+        visitorHomePage. emailAlert.click();
+    }
+
+    @Then("User fill Name, Email, Subject, Your Message boxes.")
+    public void user_fill_name_email_subject_your_message_boxes() {
+        visitorHomePage.messageName.sendKeys(ConfigReader.getProperty("name"));
+        visitorHomePage.messageEmail.sendKeys(ConfigReader.getProperty("email"));
+        visitorHomePage.messageSubject.sendKeys(ConfigReader.getProperty("subject"));
+        visitorContact.messageBox.sendKeys(ConfigReader.getProperty("YourMessage"));
+
+
+
+    }
+    @Then("User clicks {string} Button.")
+    public void user_clicks_button(String string) {
+        visitorHomePage.sendUsMessageButton.click();
+    }
+
+
+    }
+
+
+
+
+
+
+
+
