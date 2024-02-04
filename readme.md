@@ -24,7 +24,7 @@
 ***
 ***ORTAK KULLANILACAK FEATURE STEPLERİ***
 
-- SIGN IN STEPS
+- USER SIGN IN STEPS
 >   User goes to the easybusticket homepage. 
 >
 >   User clicks on Sign In button and displays the Sign In page.
@@ -36,6 +36,17 @@
 >   User clicks the Login button.
 > 
 >   User displays the Dashboard page.
+
+- ADMIN SIGN IN STEPS
+>Admin goes to the -qa.easybusticket.com admin-
+> 
+>Admin clicks on -Username- box and enters a valid "ihsanAdminUsername".
+> 
+>Admin clicks on -Password- box and enters a valid "ihsanAdminPassword".
+> 
+>Admin clicks on the -Login- button.
+> 
+>Admin displays the -Admin Dashboard- page.
 
 - IVIR ZIVIR
 >   User waits for 1 seconds.
