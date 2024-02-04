@@ -108,8 +108,8 @@ public class EasyBusTicketUser {
 
     @And("User displays the -Change Password- page.")
     public void userDisplaysTheChangePasswordPageAnd() {
-        String actualUrl = Driver.getDriver().getCurrentUrl();
-        String expectedUrl = "https://qa.easybusticket.com/user/change-password";
+        actualUrl = Driver.getDriver().getCurrentUrl();
+        expectedUrl = "https://qa.easybusticket.com/user/change-password";
         softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Change Password' page!");
     }
 
@@ -238,7 +238,6 @@ public class EasyBusTicketUser {
     @Then("User scrolls all the way down.")
     public void user_scrolls_all_the_way_down() {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
-
         javascriptExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
     }
 
@@ -272,7 +271,6 @@ public class EasyBusTicketUser {
     @Then("clicks on the privacy policy in the footer.")
     public void clicks_on_the_privacy_policy_in_the_footer() {
         visitorHomePage.footerprivacypolicy.click();
-
     }
 
     @Then("Visitor homapage header displays web elements")
@@ -285,7 +283,6 @@ public class EasyBusTicketUser {
   
     @Then("User identifies and locate the About link within the header section.")
     public void userIdentifiesAndLocateTheAboutLinkWithinTheHeaderSection() {
-        VisitorHomePage visitorHomePage = new VisitorHomePage();
         Assert.assertTrue(visitorHomePage.HeaderAbout.isDisplayed());
     }
 
@@ -433,6 +430,7 @@ public class EasyBusTicketUser {
 
     @Then("User verifies redirection to the ticket printing page and ensure the ticket details are correct.")
     public void userVerifiesRedirectionToTheTicketPrintingPageAndEnsureTheTicketDetailsAreCorrect() {
+    }
 
     @Then("Click on the {string} button on the header.")
     public void click_on_the_button_on_the_headerPhoneNumber(String HeaderPhoneNumber ) {
@@ -446,8 +444,8 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to twitter page.")
     public void verify_that_you_are_navigated_to_twitter_page() {
-        String expectedtwitterUrl="https://twitter.com/";
-        String actualtwitterUrl=Driver.getDriver().getCurrentUrl();
+        expectedUrl="https://twitter.com/";
+        actualUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"twitter page is not visible");
     }
   
@@ -463,8 +461,8 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to facebook page.")
     public void verify_that_you_are_navigated_to_facebook_page() {
-        String expectedfacebookUrl="https://www.facebook.com";
-        String actualfacebookUrl=Driver.getDriver().getCurrentUrl();
+        expectedUrl="https://www.facebook.com";
+        actualUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"facebook page is not visible");
     }
   
@@ -486,8 +484,8 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to instagram page.")
     public void verify_that_you_are_navigated_to_instagram_page() {
-        String expectedinstagramUrl="https://www.instagram.com";
-        String actualinstagramUrl=Driver.getDriver().getCurrentUrl();
+        expectedUrl="https://www.instagram.com";
+        actualUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"instagram page is not visible");
     }
   
@@ -498,9 +496,9 @@ public class EasyBusTicketUser {
   
     @And("Verify that you are navigated to the Sign In page.")
     public void verifyThatYouAreNavigatedToTheSignInPage() {
-        String expectedloginUrl="https://qa.easybusticket.com/login";
-        String actualloginUrl=Driver.getDriver().getCurrentUrl();
-        softAssert.assertEquals(actualloginUrl,expectedloginUrl,"login page is not visible");
+        expectedUrl="https://qa.easybusticket.com/login";
+        actualUrl=Driver.getDriver().getCurrentUrl();
+        softAssert.assertEquals(actualUrl,expectedUrl,"login page is not visible");
     }
   
     @And("Click on the Sign Up button on the header.")
@@ -510,8 +508,8 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to the Sign Up page.")
     public void verifyThatYouAreNavigatedToTheSignUpPage() {
-        String expectedUrl="https://qa.easybusticket.com/register";
-        String actualUrl=Driver.getDriver().getCurrentUrl();
+        expectedUrl="https://qa.easybusticket.com/register";
+        actualUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"Sign In page is not visible");
     }
   
@@ -522,9 +520,9 @@ public class EasyBusTicketUser {
   
     @Then("Verify that the page refreshes when the Easybusticket Logo ikon is clicked")
     public void verify_that_the_page_refreshes_when_the_easybusticket_logo_ikon_is_clicked() {
-        String expectedLogoUrl="https://qa.easybusticket.com/";
-        String actualLogoUrl=Driver.getDriver().getCurrentUrl();
-        softAssert.assertEquals(actualLogoUrl,expectedLogoUrl,"Logo home page is not visible");
+        expectedUrl="https://qa.easybusticket.com/";
+        actualUrl=Driver.getDriver().getCurrentUrl();
+        softAssert.assertEquals(actualUrl,expectedUrl,"Logo home page is not visible");
     }
   
     @Then("Click on the About button on the header.")
@@ -534,9 +532,9 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to the About page.")
     public void verify_that_you_are_navigated_to_the_about_page() {
-        String expectedAboutUrl="https://qa.easybusticket.com/about-us";
-        String actualAboutUrl=Driver.getDriver().getCurrentUrl();
-        softAssert.assertEquals(actualAboutUrl,expectedAboutUrl,"About page is not visible");
+        expectedUrl="https://qa.easybusticket.com/about-us";
+        actualUrl=Driver.getDriver().getCurrentUrl();
+        softAssert.assertEquals(actualUrl,expectedUrl,"About page is not visible");
     }
   
     @Then("Click on the FAQs button on the header.")
@@ -546,9 +544,9 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to the FAQs page.")
     public void verify_that_you_are_navigated_to_the_fa_qs_page() {
-        String expectedFAQsUrl="https://qa.easybusticket.com/faq";
-        String actualFAQsUrl=Driver.getDriver().getCurrentUrl();
-        softAssert.assertEquals(actualFAQsUrl,expectedFAQsUrl,"FAQs page is not visible");
+        expectedUrl="https://qa.easybusticket.com/faq";
+        actualUrl=Driver.getDriver().getCurrentUrl();
+        softAssert.assertEquals(actualUrl,expectedUrl,"FAQs page is not visible");
     }
   
     @Then("Click on the Blog button on the header.")
@@ -558,9 +556,9 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to the Blog page.")
     public void verify_that_you_are_navigated_to_the_blog_page() {
-        String expectedBlogUrl="https://qa.easybusticket.com/blog";
-        String actualBlogUrl=Driver.getDriver().getCurrentUrl();
-        softAssert.assertEquals(actualBlogUrl,expectedBlogUrl,"Blog  page is not visible");
+        expectedUrl="https://qa.easybusticket.com/blog";
+        actualUrl=Driver.getDriver().getCurrentUrl();
+        softAssert.assertEquals(actualUrl,expectedUrl,"Blog  page is not visible");
     }
   
     @Then("Click on the Contact button on the header.")
@@ -570,9 +568,9 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to the Contact page.")
     public void verify_that_you_are_navigated_to_the_contact_page() {
-        String expectedContactUrl="https://qa.easybusticket.com/contact";
-        String actualContactUrl=Driver.getDriver().getCurrentUrl();
-        softAssert.assertEquals(actualContactUrl,expectedContactUrl,"Contact page is not visible");
+        expectedUrl="https://qa.easybusticket.com/contact";
+        actualUrl=Driver.getDriver().getCurrentUrl();
+        softAssert.assertEquals(actualUrl,expectedUrl,"Contact page is not visible");
     }
   
     @Then("Click on the BUY TICKETS button on the header.")
@@ -582,9 +580,9 @@ public class EasyBusTicketUser {
   
     @Then("Verify that you are navigated to the Tickets page.")
     public void verify_that_you_are_navigated_to_the_tickets_page() {
-        String expectedTicketsUrl="https://qa.easybusticket.com/tickets";
-        String actualTicketsUrl=Driver.getDriver().getCurrentUrl();
-        softAssert.assertEquals(actualTicketsUrl,expectedTicketsUrl,"Tickets page is not visible");
+        expectedUrl="https://qa.easybusticket.com/tickets";
+        actualUrl=Driver.getDriver().getCurrentUrl();
+        softAssert.assertEquals(actualUrl,expectedUrl,"Tickets page is not visible");
     }
   
     @And("Click on the {string}on the header.")
@@ -599,8 +597,8 @@ public class EasyBusTicketUser {
   
     @And("Verify that menu dasbord button is visible successfully")
     public void verifyThatMenuDasbordButtonIsVisibleSuccessfully() {
-        SoftAssert softAssert=new SoftAssert();
-        softAssert.assertTrue(userSignIn.HeaderDashboard.isDisplayed(),"dashboard button is not visible");
+        softAssert.assertTrue(userSignIn.HeaderDashboard.isDisplayed(), "dashboard button is not visible");
+    }
 
     @Then("User must click on \"Allow Cookies\"button.")
     public void user_must_click_on_allow_cookies_button() {
