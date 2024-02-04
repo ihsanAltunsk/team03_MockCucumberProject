@@ -9,17 +9,20 @@ import io.cucumber.java.en.But;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
+import pages.admin.AdminDashboard;
+import pages.admin.AdminSignIn;
 import pages.user.UserSignIn;
 import pages.user.UserSignUp;
 import pages.user.registeredUser.ChangePassword;
 import pages.user.registeredUser.Profile;
+import pages.visitor.VisitorContact;
 import pages.visitor.VisitorHomePage;
 import utilities.ConfigReader;
 import utilities.Driver;
 import utilities.ReusableMethods;
 
 public class EasyBusTicketUser {
-    String actualUrl,expectedUrl;
+    String actualUrl, expectedUrl, actualError, expectedError, actualText, expectedText;
     Actions actions = new Actions(Driver.getDriver());
     Profile profile = new Profile();
     ChangePassword changePassword = new ChangePassword();
@@ -27,7 +30,8 @@ public class EasyBusTicketUser {
     UserSignIn userSignIn = new UserSignIn();
     UserSignUp userSignUp= new UserSignUp();
     SoftAssert softAssert = new SoftAssert();
-
+    VisitorContact visitorContact =new VisitorContact();
+  
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
         Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
@@ -65,10 +69,11 @@ public class EasyBusTicketUser {
         expectedUrl = "https://qa.easybusticket.com/user/dashboard";
         softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Dashboard' page!");
     }
+
     @Then("User verifies that -These credentials do not match our records.- error text appeared.")
     public void userVerifiesThatTheseCredentialsDoNotMatchOurRecordsErrorTextAppeared() {
-        String actualError = userSignIn.labelError.getText();
-        String expectedError = "These credentials do not match our records.";
+        actualError = userSignIn.labelError.getText();
+        expectedError = "These credentials do not match our records.";
         softAssert.assertEquals(actualError, expectedError, "Error text DID NOT appear!");
     }
 
@@ -87,56 +92,48 @@ public class EasyBusTicketUser {
         }
     }
 
-    @Then("User clicks the Profile button and clicks Change Password from the selection menu.")
+    @Then("User clicks the -Profile- button and clicks -Change Password- from the selection menu.")
     public void userClicksTheProfileButtonAndClicksChangePasswordFromTheSelectionMenu() {
         actions.moveToElement(profile.liProfile).perform();
         ReusableMethods.bekle(1);
         profile.ChangePassword.click();
     }
 
-    @And("User displays the Change Password page.")
+    @And("User displays the -Change Password- page.")
     public void userDisplaysTheChangePasswordPageAnd() {
-        String actualUrl = Driver.getDriver().getCurrentUrl();
-        String expectedUrl = "https://qa.easybusticket.com/user/change-password";
+        actualUrl = Driver.getDriver().getCurrentUrl();
+        expectedUrl = "https://qa.easybusticket.com/user/change-password";
         softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Change Password' page!");    }
 
-    @And("User clicks on Change Password button and verifies that Password changes succesfully text appeared.")
+    @And("User clicks on -Change Password- button and verifies that -Password changes succesfully- text appeared.")
     public void userClicksOnChangePasswordButtonAndVerifiesThatPasswordChangesSuccesfullyTextAppeared() {
         changePassword.changePasswordButton.click();
 
-        String actualText = changePassword.labelPasswordAlert.getText();
-        String expectedText = "Password changes succesfully";
+        actualText = changePassword.labelPasswordAlert.getText();
+        expectedText = "Password changes succesfully";
         softAssert.assertEquals(actualText, expectedText, "'Password changes succesfully' text DID NOT appear!");
     }
 
-    @Then("User clicks Current Password box and enters {string} password.")
+    @Then("User clicks -Current Password- box and enters {string} password.")
     public void userClicksCurrentPasswordBoxAndEntersPassword(String password) {
         changePassword.currentPasswordBox.sendKeys(ConfigReader.getProperty(password));
     }
 
-    @And("User clicks Password box and enters {string} password.")
+    @And("User clicks -Password- box and enters {string} password.")
     public void userClicksPasswordBoxAndEntersPassword(String password) {
         changePassword.passwordBox.sendKeys(ConfigReader.getProperty(password));
     }
 
-    @And("User clicks Confirm Password box and enters {string} password.")
+    @And("User clicks -Confirm Password- box and enters {string} password.")
     public void userClicksConfirmPasswordBoxAndEntersPassword(String password) {
         changePassword.confirmPasswordBox.sendKeys(ConfigReader.getProperty(password));
-    }
-
-    @And("User clicks on Change Password button and verifies that The password confirmation does not match appeared.")
-    public void userClicksOnChangePasswordButtonAndVerifiesThatThePasswordConfirmationDoesNotMatchAppeared() {
-        changePassword.changePasswordButton.click();
-        ReusableMethods.bekle(1);
-        String actualText = changePassword.labelPasswordAlert2.getText();
-        String expectedText = "The password confirmation does not match.";
-        softAssert.assertEquals(actualText, expectedText, "'The password confirmation does not match.' text DID NOT appear!");
     }
 
     @Given("Visitor goes to the easybusticket homepage.")
     public void visitor_goes_to_the_easybusticket_homepage() {
             Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
     }
+
     @Then("Verify that home page is visible successfully")
     public void verify_that_home_page_is_visible_successfully() {
         actualUrl = Driver.getDriver().getCurrentUrl();
@@ -173,6 +170,7 @@ public class EasyBusTicketUser {
         Select selectcountry=new Select(userSignUp.countryBox);
         selectcountry.selectByValue(ConfigReader.getProperty("humeyraSignUpCountry"));
     }
+
     @Then("User clicks on mobile box and enter a valid mobile number {string}")
     public void userClicksOnMobileBoxAndEnterAValidMobileNumber(String mobileNumber) {
         userSignUp.mobileBox.click();
@@ -190,7 +188,6 @@ public class EasyBusTicketUser {
         userSignUp.emailBox.click();
         userSignUp.emailBox.sendKeys(ConfigReader.getProperty("humeyraSignUpEmail"));
     }
-
 
     @Then("User clicks on password box and enter invalid password {string}")
     public void userClicksOnPasswordBoxAndEnterInvalidPassword(String invalidPassword) {
@@ -216,9 +213,9 @@ public class EasyBusTicketUser {
 
     @Then("Verify that user can't register {string}")
     public void verifyThatUserCanTRegister(String alert) {
-        String expectedAlert = alert;
-        String actualAlert = userSignUp.alert.getText();
-        softAssert.assertEquals(actualAlert, expectedAlert, "user can register3");
+        expectedError = alert;
+        actualError = userSignUp.alert.getText();
+        softAssert.assertEquals(expectedError, actualError, "user can register3");
     }
       
     @Then("Verify that header is visible successfully")
@@ -247,10 +244,7 @@ public class EasyBusTicketUser {
     @Then("User sees {string} under the {string} Menu.")
     public void user_sees_under_the_menu(String string, String string2) {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
-
-
         javascriptExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-
         Assert.assertTrue(visitorHomePage.footerabout.isDisplayed());
     }
 
@@ -269,7 +263,6 @@ public class EasyBusTicketUser {
         visitorHomePage.footercontact.click();
     }
 
-
     @Then("clicks on the privacy policy in the footer.")
     public void clicks_on_the_privacy_policy_in_the_footer() {
         visitorHomePage.footerprivacypolicy.click();
@@ -277,151 +270,254 @@ public class EasyBusTicketUser {
     }
     @Then("Visitor homapage header displays web elements")
     public void visitorHomapageHeaderDisplaysWebElements() {
-        SoftAssert softAssert = new SoftAssert();
-        VisitorHomePage visitorHomePage=new VisitorHomePage();
         Driver.getDriver().get("https://qa.easybusticket.com");
         for (int i = 0; i < 20 ; i++) {
             softAssert.assertTrue(visitorHomePage.listr.get(i).isDisplayed());
         }
     }
+
     @Then("Click on the {string} button on the header.")
     public void click_on_the_button_on_the_headerPhoneNumber(String HeaderPhoneNumber ) {
         visitorHomePage.HeaderPhoneNumber.click();
     }
+  
     @Then("Click on the Twitter icon button on the header.")
     public void click_on_the_twitter_icon_button_on_the_header() {
         visitorHomePage.Headertiwetterİcon.click();
     }
+  
     @Then("Verify that you are navigated to twitter page.")
     public void verify_that_you_are_navigated_to_twitter_page() {
         String expectedtwitterUrl="https://twitter.com/";
         String actualtwitterUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"twitter page is not visible");
     }
+  
     @Then("Navigate to back.")
     public void navigate_to_back() {
         Driver.getDriver().navigate().back();
     }
+  
     @Then("Click on the Facebook icon button on the header.")
     public void click_on_the_facebook_icon_button_on_the_header() {
         visitorHomePage.HeaderFacebook.click();
     }
+  
     @Then("Verify that you are navigated to facebook page.")
     public void verify_that_you_are_navigated_to_facebook_page() {
         String expectedfacebookUrl="https://www.facebook.com";
         String actualfacebookUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"facebook page is not visible");
     }
+  
     @Then("Click on the YouTube icon button on the header.")
     public void click_on_the_you_tube_icon_button_on_the_header() {
         visitorHomePage.HeaderYoutube.click();
     }
+  
     @Then("Verify that you are navigated to youtube page.")
     public void verify_that_you_are_navigated_to_youtube_page() {
         actualUrl = Driver.getDriver().getCurrentUrl();
         softAssert.assertTrue(actualUrl.contains("youtube.com"), "You are NOT navigated to youtube page!");
     }
+  
     @Then("Click on the Instagram icon button on the header.")
     public void click_on_the_ınstagram_icon_button_on_the_header() {
         visitorHomePage.Headerİnstagramİcon.click();
     }
+  
     @Then("Verify that you are navigated to instagram page.")
     public void verify_that_you_are_navigated_to_instagram_page() {
         String expectedinstagramUrl="https://www.instagram.com";
         String actualinstagramUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"instagram page is not visible");
     }
+  
     @Then("Click on the Sign In button on the header.")
     public void clickOnTheSignInButtonOnTheHeader() {
         visitorHomePage.HeaderSignİgn.click();
     }
+  
     @And("Verify that you are navigated to the Sign In page.")
     public void verifyThatYouAreNavigatedToTheSignInPage() {
         String expectedloginUrl="https://qa.easybusticket.com/login";
         String actualloginUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualloginUrl,expectedloginUrl,"login page is not visible");
     }
+  
     @And("Click on the Sign Up button on the header.")
     public void clickOnTheSignUpButtonOnTheHeader() {
         visitorHomePage.HeaderSignUp.click();
     }
+  
     @Then("Verify that you are navigated to the Sign Up page.")
     public void verifyThatYouAreNavigatedToTheSignUpPage() {
         String expectedUrl="https://qa.easybusticket.com/register";
         String actualUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualUrl,expectedUrl,"Sign In page is not visible");
     }
+  
     @Then("Click on the Easybusticket ikon  on the header.")
     public void click_on_the_easybusticket_ikon_on_the_header() {
         visitorHomePage.HeaderLogo.click();
     }
+  
     @Then("Verify that the page refreshes when the Easybusticket Logo ikon is clicked")
     public void verify_that_the_page_refreshes_when_the_easybusticket_logo_ikon_is_clicked() {
         String expectedLogoUrl="https://qa.easybusticket.com/";
         String actualLogoUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualLogoUrl,expectedLogoUrl,"Logo home page is not visible");
     }
+  
     @Then("Click on the About button on the header.")
     public void click_on_the_about_button_on_the_header() {
         visitorHomePage.HeaderAbout.click();
     }
+  
     @Then("Verify that you are navigated to the About page.")
     public void verify_that_you_are_navigated_to_the_about_page() {
         String expectedAboutUrl="https://qa.easybusticket.com/about-us";
         String actualAboutUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualAboutUrl,expectedAboutUrl,"About page is not visible");
     }
+  
     @Then("Click on the FAQs button on the header.")
     public void click_on_the_fa_qs_button_on_the_header() {
         visitorHomePage.HeaderFaQs.click();
     }
+  
     @Then("Verify that you are navigated to the FAQs page.")
     public void verify_that_you_are_navigated_to_the_fa_qs_page() {
         String expectedFAQsUrl="https://qa.easybusticket.com/faq";
         String actualFAQsUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualFAQsUrl,expectedFAQsUrl,"FAQs page is not visible");
     }
+  
     @Then("Click on the Blog button on the header.")
     public void click_on_the_blog_button_on_the_header() {
         visitorHomePage.HeaderBlog.click();
     }
+  
     @Then("Verify that you are navigated to the Blog page.")
     public void verify_that_you_are_navigated_to_the_blog_page() {
         String expectedBlogUrl="https://qa.easybusticket.com/blog";
         String actualBlogUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualBlogUrl,expectedBlogUrl,"Blog  page is not visible");
     }
+  
     @Then("Click on the Contact button on the header.")
     public void click_on_the_contact_button_on_the_header() {
         visitorHomePage.HeaderContact.click();
     }
+  
     @Then("Verify that you are navigated to the Contact page.")
     public void verify_that_you_are_navigated_to_the_contact_page() {
         String expectedContactUrl="https://qa.easybusticket.com/contact";
         String actualContactUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualContactUrl,expectedContactUrl,"Contact page is not visible");
     }
+  
     @Then("Click on the BUY TICKETS button on the header.")
     public void click_on_the_buy_tıckets_button_on_the_header() {
         visitorHomePage.HeaderByTicket.click();
     }
+  
     @Then("Verify that you are navigated to the Tickets page.")
     public void verify_that_you_are_navigated_to_the_tickets_page() {
         String expectedTicketsUrl="https://qa.easybusticket.com/tickets";
         String actualTicketsUrl=Driver.getDriver().getCurrentUrl();
         softAssert.assertEquals(actualTicketsUrl,expectedTicketsUrl,"Tickets page is not visible");
     }
+  
     @And("Click on the {string}on the header.")
     public void clickOnTheOnTheHeader(String arg0) {
         visitorHomePage.HeaderLogo.click();
     }
+  
     @And("Click on the {string} button  on the header.")
     public void clickOnTheButtonOnTheHeader(String arg0) {
         visitorHomePage.HeaderDasbordLinkButton.click();
     }
+  
     @And("Verify that menu dasbord button is visible successfully")
     public void verifyThatMenuDasbordButtonIsVisibleSuccessfully() {
         SoftAssert softAssert=new SoftAssert();
         softAssert.assertTrue(userSignIn.HeaderDashboard.isDisplayed(),"dashboard button is not visible");
+
+    @Then("User must click on \"Allow Cookies\"button.")
+    public void user_must_click_on_allow_cookies_button() {
+        visitorHomePage.cookiesAllow.click();
+    }
+      
+    @Then("User clicks {string} button on Header menu.")
+    public void user_clicks_button_on_header_menu(String string) {
+        visitorHomePage.HeaderContact.click();
+    }
+      
+    @Then("Click on contact from the footer menu.")
+    public void click_on_contact_from_the_footer_menu() {
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
+        javascriptExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        visitorHomePage.footerContacınfo.click();
+    }
+
+    @Then("User clicks the allow cookies button.")
+    public void user_clicks_the_allow_cookies_button() {
+        visitorHomePage.cookiesAllow.click();
+    }
+      
+    @Then("User should be landed on {string} page.")
+    public void user_should_be_landed_on_page(String string) {
+        visitorHomePage.HeaderContact.click();
+    }
+      
+    @Then("User should be able to see address, phone, e-meail infos.")
+    public void user_should_be_able_to_see_address_phone_e_meail_infos() {
+        Assert.assertTrue(visitorHomePage.HeaderEmailAddress.isDisplayed());
+        Assert.assertTrue(visitorHomePage.HeaderPhoneNumber.isDisplayed());
+        Assert.assertTrue(visitorHomePage.HeaderEmailAddress.isDisplayed());
+    }
+      
+    @Then("User clicks phone number.")
+    public void user_clicks_phone_number() {
+        visitorHomePage. HeaderPhoneNumber.click();
+    }
+      
+    @Then("User displays phone alert.")
+    public void user_displays_phone_alert() {
+        Assert.assertTrue(visitorHomePage. phoneAlert.isDisplayed());
+    }
+
+    @Given("User clicks e-mail string.")
+    public void user_clicks_e_mail_string() {
+        visitorHomePage.HeaderEmailAddress.click();
+    }
+      
+    @Given("User displays e-mail alert.")
+    public void user_displays_e_mail_alert() {
+        visitorHomePage. emailAlert.click();
+    }
+
+    @Then("User fill Name, Email, Subject, Your Message boxes.")
+    public void user_fill_name_email_subject_your_message_boxes() {
+        visitorHomePage.messageName.sendKeys(ConfigReader.getProperty("name"));
+        visitorHomePage.messageEmail.sendKeys(ConfigReader.getProperty("email"));
+        visitorHomePage.messageSubject.sendKeys(ConfigReader.getProperty("subject"));
+        visitorContact.messageBox.sendKeys(ConfigReader.getProperty("YourMessage"));
+    }
+      
+    @Then("User clicks {string} Button.")
+    public void user_clicks_button(String string) {
+        visitorHomePage.sendUsMessageButton.click();
+    }
+
+    @And("User clicks on Change Password button and verifies that {string} appeared.")
+    public void userClicksOnChangePasswordButtonAndVerifiesThatAppeared(String error) {
+        changePassword.changePasswordButton.click();
+        ReusableMethods.bekle(1);
+
+        actualText = changePassword.labelPasswordAlert2.getText();
+        expectedText = ConfigReader.getProperty(error);
+        softAssert.assertEquals(actualText, expectedText, "'The password confirmation does not match.' text DID NOT appear!");
     }
 }
