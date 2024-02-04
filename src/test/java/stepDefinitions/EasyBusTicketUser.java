@@ -4,6 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import io.cucumber.java.en.But;
 import org.openqa.selenium.interactions.Actions;
@@ -11,23 +12,27 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 import pages.user.UserSignIn;
 import pages.user.UserSignUp;
+import pages.user.registeredUser.BuyTicket;
 import pages.user.registeredUser.ChangePassword;
 import pages.user.registeredUser.Profile;
+import pages.user.registeredUser.UserDashboard;
+import pages.visitor.VisitorAbout;
 import pages.visitor.VisitorHomePage;
 import utilities.ConfigReader;
 import utilities.Driver;
 import utilities.ReusableMethods;
 
 public class EasyBusTicketUser {
-    String actualUrl,expectedUrl;
+    String actualUrl, expectedUrl;
     Actions actions = new Actions(Driver.getDriver());
     Profile profile = new Profile();
     ChangePassword changePassword = new ChangePassword();
     VisitorHomePage visitorHomePage = new VisitorHomePage();
     UserSignIn userSignIn = new UserSignIn();
-    UserSignUp userSignUp= new UserSignUp();
+    UserSignUp userSignUp = new UserSignUp();
     SoftAssert softAssert = new SoftAssert();
-
+    UserDashboard userDashboard = new UserDashboard();
+    BuyTicket buyTicket = new BuyTicket();
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
         Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
@@ -65,6 +70,7 @@ public class EasyBusTicketUser {
         expectedUrl = "https://qa.easybusticket.com/user/dashboard";
         softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Dashboard' page!");
     }
+
     @Then("User verifies that -These credentials do not match our records.- error text appeared.")
     public void userVerifiesThatTheseCredentialsDoNotMatchOurRecordsErrorTextAppeared() {
         String actualError = userSignIn.labelError.getText();
@@ -98,7 +104,8 @@ public class EasyBusTicketUser {
     public void userDisplaysTheChangePasswordPageAnd() {
         String actualUrl = Driver.getDriver().getCurrentUrl();
         String expectedUrl = "https://qa.easybusticket.com/user/change-password";
-        softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Change Password' page!");    }
+        softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Change Password' page!");
+    }
 
     @And("User clicks on Change Password button and verifies that Password changes succesfully text appeared.")
     public void userClicksOnChangePasswordButtonAndVerifiesThatPasswordChangesSuccesfullyTextAppeared() {
@@ -135,8 +142,9 @@ public class EasyBusTicketUser {
 
     @Given("Visitor goes to the easybusticket homepage.")
     public void visitor_goes_to_the_easybusticket_homepage() {
-            Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
+        Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
     }
+
     @Then("Verify that home page is visible successfully")
     public void verify_that_home_page_is_visible_successfully() {
         actualUrl = Driver.getDriver().getCurrentUrl();
@@ -152,7 +160,7 @@ public class EasyBusTicketUser {
 
     @Then("User displays  Sign up your account")
     public void userDisplaysSignUpYourAccount() {
-        softAssert.assertTrue(userSignUp.labelSignUpYourAccount.isDisplayed(),"user did not display the text sign up your account");
+        softAssert.assertTrue(userSignUp.labelSignUpYourAccount.isDisplayed(), "user did not display the text sign up your account");
 
     }
 
@@ -170,9 +178,10 @@ public class EasyBusTicketUser {
 
     @Then("User clicks on country box and choose a country {string}")
     public void userClicksOnCountryBoxAndChooseACountry(String Country) {
-        Select selectcountry=new Select(userSignUp.countryBox);
+        Select selectcountry = new Select(userSignUp.countryBox);
         selectcountry.selectByValue(ConfigReader.getProperty("humeyraSignUpCountry"));
     }
+
     @Then("User clicks on mobile box and enter a valid mobile number {string}")
     public void userClicksOnMobileBoxAndEnterAValidMobileNumber(String mobileNumber) {
         userSignUp.mobileBox.click();
@@ -220,13 +229,13 @@ public class EasyBusTicketUser {
         String actualAlert = userSignUp.alert.getText();
         softAssert.assertEquals(actualAlert, expectedAlert, "user can register3");
     }
-      
+
     @Then("Verify that header is visible successfully")
     public void verify_that_header_is_visible_successfully() {
-        softAssert.assertTrue(visitorHomePage.singInButton.isDisplayed(),"header isn't visible successfully");
+        softAssert.assertTrue(visitorHomePage.singInButton.isDisplayed(), "header isn't visible successfully");
         softAssert.assertAll();
     }
-      
+
     @Then("User clicks {string} button in pop menu.")
     public void user_clicks_button_in_pop_menu(String string) {
         visitorHomePage.cookiesAllow.click();
@@ -276,14 +285,166 @@ public class EasyBusTicketUser {
 
 
     }
-      
+
     @Then("Visitor homapage header displays web elements")
     public void visitorHomapageHeaderDisplaysWebElements() {
         SoftAssert softAssert = new SoftAssert();
-        VisitorHomePage visitorHomePage=new VisitorHomePage();
+        VisitorHomePage visitorHomePage = new VisitorHomePage();
         Driver.getDriver().get("https://qa.easybusticket.com");
-        for (int i = 0; i < 20 ; i++) {
+        for (int i = 0; i < 20; i++) {
             softAssert.assertTrue(visitorHomePage.listr.get(i).isDisplayed());
         }
+    }
+
+    @Then("User identifies and locate the About link within the header section.")
+    public void userIdentifiesAndLocateTheAboutLinkWithinTheHeaderSection() {
+        VisitorHomePage visitorHomePage = new VisitorHomePage();
+        Assert.assertTrue(visitorHomePage.HeaderAbout.isDisplayed());
+    }
+
+    @And("User clicks on the About link.")
+    public void userClicksOnTheAboutLink() {
+        visitorHomePage.HeaderAbout.click();
+    }
+
+    @And("User verifies that the About page loads correctly without any errors or delays.")
+    public void userVerifiesThatTheAboutPageLoadsCorrectlyWithoutAnyErrorsOrDelays() {
+        VisitorAbout visitorAbout = new VisitorAbout();
+        Assert.assertTrue(visitorAbout.aboutTitle.isDisplayed());
+    }
+
+    @Then("User confirms that the displayed information matches the expected details on about page.")
+    public void userConfirmsThatTheDisplayedInformationMatchesTheExpectedDetailsOnAboutPage() {
+        VisitorAbout visitorAbout1 = new VisitorAbout();
+        Assert.assertTrue(visitorAbout1.aboutPageTextInformation.isDisplayed());
+    }
+
+    @And("User confirms that the menu and its items are visible and accessible.")
+    public void userConfirmsThatTheMenuAndItsItemsAreVisibleAndAccessible() {
+        Assert.assertTrue(userDashboard.dashboardButton.isDisplayed());
+        Assert.assertTrue(userDashboard.bookingButton.isDisplayed());
+        Assert.assertTrue(userDashboard.supportRequestButton.isDisplayed());
+        Assert.assertTrue(userDashboard.linkProfile.isDisplayed());
+    }
+
+    @And("In the booking menu, locate and click on the Buy Ticket link")
+    public void inTheBookingMenuLocateAndClickOnTheBuyTicketLink() {
+        userDashboard.bookingButton.click();
+        userDashboard.buyTicketButton.click();
+    }
+
+    @And("User ensures the ticket purchase screen loads correctly")
+    public void userEnsuresTheTicketPurchaseScreenLoadsCorrectly() {
+        Assert.assertTrue(buyTicket.ticketPurchaseScreen.isDisplayed());
+    }
+
+    @And("User enters the required ticket information \\(destination, date).")
+    public void userEntersTheRequiredTicketInformationDestinationDate() {
+        Select pickUpPoint = new Select(visitorHomePage.dropDownPickupPoint);
+        pickUpPoint.selectByVisibleText("Dallas");
+        Select dropDownPoint = new Select(visitorHomePage.dropDownDroppingPoint);
+        dropDownPoint.selectByVisibleText("Austin");
+        visitorHomePage.dropDownDepartureDate.sendKeys(ConfigReader.getProperty("senaydaDepartureDate"));
+    }
+
+    @And("User clicks on the Find Ticket button.")
+    public void userClicksOnTheFindTicketButton() {
+        visitorHomePage.findTicketsButton.click();
+    }
+
+    @And("User verifies that available ticket options are displayed")
+    public void userVerifiesThatAvailableTicketOptionsAreDisplayed() {
+        Assert.assertTrue(buyTicket.ticketOptions.isDisplayed());
+        buyTicket.selectSeatButton.sendKeys(Keys.DOWN);
+        buyTicket.selectSeatButton.sendKeys(Keys.DOWN);
+        buyTicket.selectSeatButton.sendKeys(Keys.DOWN);
+        buyTicket.selectSeatButton.sendKeys(Keys.DOWN);
+    }
+
+    @And("User clicks on the Select Seat button for a chosen ticket option.")
+    public void userClicksOnTheSelectSeatButtonForAChosenTicketOption() {
+        buyTicket.selectSeatButton.click();
+    }
+
+    @And("User selects a gender and chooses a seat on the seat selection screen.")
+    public void userSelectsAGenderAndChoosesASeatOnTheSeatSelectionScreen() {
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
+        javascriptExecutor.executeScript("arguments[0].scrollIntoView();",
+                buyTicket.checkBoxFemale);
+        buyTicket.checkBoxFemale.click();
+        buyTicket.selectSeatNumberButton.click();
+    }
+
+    @And("User selects one of the available seats")
+    public void userSelectsOneOfTheAvailableSeats() {
+
+    }
+
+    @And("User confirms the ticket price is displayed.")
+    public void userConfirmsTheTicketPriceIsDisplayed() {
+    }
+
+    @And("User clicks on the Continue button to proceed.")
+    public void userClicksOnTheContinueButtonToProceed() {
+    }
+
+    @And("User clicks on Confirm button")
+    public void userClicksOnConfirmButton() {
+    }
+
+    @And("User verifies the displayed payment text on the subsequent page.")
+    public void userVerifiesTheDisplayedPaymentTextOnTheSubsequentPage() {
+    }
+
+    @And("User ensures the Pay Now button is present and functional.")
+    public void userEnsuresThePayNowButtonIsPresentAndFunctional() {
+    }
+
+    @And("User clicks on the Pay Now button.")
+    public void userClicksOnThePayNowButton() {
+    }
+
+    @And("User click on Confirm button to payment")
+    public void userClickOnConfirmButtonToPayment() {
+    }
+
+    @And("User confirms redirect to the payment screen.")
+    public void userConfirmsRedirectToThePaymentScreen() {
+    }
+
+    @And("User clicks again Pay now button to continue")
+    public void userClicksAgainPayNowButtonToContinue() {
+    }
+
+    @And("User enters valid credit card information.")
+    public void userEntersValidCreditCardInformation() {
+    }
+
+    @And("User submits the payment.")
+    public void userSubmitsThePayment() {
+    }
+
+    @And("User ensures the payment confirmation or success message is displayed.")
+    public void userEnsuresThePaymentConfirmationOrSuccessMessageIsDisplayed() {
+    }
+
+    @And("After successful payment, User verifies that ticket details are displayed.")
+    public void afterSuccessfulPaymentUserVerifiesThatTicketDetailsAreDisplayed() {
+    }
+
+    @And("User confirms the accuracy of the ticket information.")
+    public void userConfirmsTheAccuracyOfTheTicketInformation() {
+    }
+
+    @And("User ensures the purchased ticket is listed.")
+    public void userEnsuresThePurchasedTicketIsListed() {
+    }
+
+    @And("User clicks on the Print Ticket button next to the purchased ticket.")
+    public void userClicksOnThePrintTicketButtonNextToThePurchasedTicket() {
+    }
+
+    @Then("User verifies redirection to the ticket printing page and ensure the ticket details are correct.")
+    public void userVerifiesRedirectionToTheTicketPrintingPageAndEnsureTheTicketDetailsAreCorrect() {
     }
 }
