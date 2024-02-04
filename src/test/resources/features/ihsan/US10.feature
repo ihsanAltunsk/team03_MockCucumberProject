@@ -9,8 +9,7 @@ Feature: US10 User logs in to the homepage
       Then  User displays the Dashboard page.
       Then  User closes the page.
 
-
-    Scenario Outline: TC02 Registered user cannot access to the dashboard with wrong credentals.
+    Scenario Outline: TC02 Registered user cannot access to the dashboard with wrong credentials.
       Given User goes to the easybusticket homepage.
       Then  User clicks on Sign In button and displays the Sign In page.
       And   User clicks on Username box and enters a valid "<givenEmail>".
@@ -20,8 +19,8 @@ Feature: US10 User logs in to the homepage
       Then  User verifies that -These credentials do not match our records.- error text appeared.
       Then  User closes the page.
 
-    Examples:
-    | givenEmail           | givenPassword        |
-    | ihsanUsername        | ihsanInvalidPassword |
-    | ihsanInvalidUsername | ihsanPassword        |
-    | ihsanInvalidUsername | ihsanInvalidPassword |
+      Examples:
+      | givenEmail           | givenPassword        |
+      | ihsanUsername        | ihsanInvalidPassword |
+      | ihsanInvalidUsername | ihsanPassword        |
+      | ihsanInvalidUsername | ihsanInvalidPassword |
