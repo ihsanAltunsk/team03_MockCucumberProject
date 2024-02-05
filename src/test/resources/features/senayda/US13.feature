@@ -19,22 +19,23 @@ Feature: US13 As a registered user I should be able to access the ticket purchas
     And User clicks on the Find Ticket button.
     And User verifies that available ticket options are displayed
     And User clicks on the Select Seat button for a chosen ticket option.
-    And User selects a gender and chooses a seat on the seat selection screen.
+    Then User selects a gender and chooses a seat on the seat selection screen.
     And User selects one of the available seats
     And User confirms the ticket price is displayed.
     And User clicks on the Continue button to proceed.
-    And User clicks on Confirm button
+    Then User clicks on Confirm button
     And User verifies the displayed payment text on the subsequent page.
     And User ensures the Pay Now button is present and functional.
     And User clicks on the Pay Now button.
-    And User click on Confirm button to payment
+    Then User click on Confirm button to payment
     And User confirms redirect to the payment screen.
     And User clicks again Pay now button to continue
     And User enters valid credit card information.
-    And User submits the payment.
+    Then User submits the payment.
     And User ensures the payment confirmation or success message is displayed.
     And After successful payment, User verifies that ticket details are displayed.
-    And User confirms the accuracy of the ticket information.
+    Then User confirms the accuracy of the ticket information.
     And User ensures the purchased ticket is listed.
     And User clicks on the Print Ticket button next to the purchased ticket.
-   Then User verifies redirection to the ticket printing page and ensure the ticket details are correct.
+    And User verifies redirection to the ticket printing page and ensure the ticket details are correct.
+    Then User Download and verify the ticket.

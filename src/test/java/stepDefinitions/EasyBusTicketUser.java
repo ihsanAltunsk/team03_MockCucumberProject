@@ -38,7 +38,8 @@ public class EasyBusTicketUser {
     UserDashboard userDashboard = new UserDashboard();
     BuyTicket buyTicket = new BuyTicket();
     VisitorContact visitorContact =new VisitorContact();
-  
+    JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
+
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
         Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
@@ -355,81 +356,115 @@ public class EasyBusTicketUser {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
         javascriptExecutor.executeScript("arguments[0].scrollIntoView();",
                 buyTicket.checkBoxFemale);
+        ReusableMethods.bekle(2);
         buyTicket.checkBoxFemale.click();
         buyTicket.selectSeatNumberButton.click();
     }
 
     @And("User selects one of the available seats")
     public void userSelectsOneOfTheAvailableSeats() {
-
+        buyTicket.selectSeatNumberButton.click();
     }
 
     @And("User confirms the ticket price is displayed.")
     public void userConfirmsTheTicketPriceIsDisplayed() {
+        Assert.assertTrue(buyTicket.ticketPriceDisplay.isDisplayed());
     }
 
     @And("User clicks on the Continue button to proceed.")
     public void userClicksOnTheContinueButtonToProceed() {
+        buyTicket.continueButton.click();
     }
 
     @And("User clicks on Confirm button")
     public void userClicksOnConfirmButton() {
+        buyTicket.confirmButton.click();
     }
 
     @And("User verifies the displayed payment text on the subsequent page.")
     public void userVerifiesTheDisplayedPaymentTextOnTheSubsequentPage() {
+        Assert.assertTrue(buyTicket.paymentText.isDisplayed());
     }
 
     @And("User ensures the Pay Now button is present and functional.")
     public void userEnsuresThePayNowButtonIsPresentAndFunctional() {
+        Assert.assertTrue(buyTicket.payNowButton.isDisplayed());
     }
 
     @And("User clicks on the Pay Now button.")
     public void userClicksOnThePayNowButton() {
+        javascriptExecutor.executeScript("arguments[0].scrollIntoView();", buyTicket.payNowButton);
+        ReusableMethods.bekle(2);
+        buyTicket.payNowButton.click();
     }
 
     @And("User click on Confirm button to payment")
     public void userClickOnConfirmButtonToPayment() {
+        buyTicket.confirmButton2.click();
     }
 
     @And("User confirms redirect to the payment screen.")
     public void userConfirmsRedirectToThePaymentScreen() {
+        Assert.assertTrue(buyTicket.paymentPreviewPage.isDisplayed());
+        javascriptExecutor.executeScript("arguments[0].scrollIntoView();",
+                buyTicket.payNowButtonLast);
     }
 
     @And("User clicks again Pay now button to continue")
     public void userClicksAgainPayNowButtonToContinue() {
+        buyTicket.payNowButtonLast.click();
     }
 
     @And("User enters valid credit card information.")
     public void userEntersValidCreditCardInformation() {
+        buyTicket.nameOnCardButton.sendKeys(ConfigReader.getProperty("senaydaNameOnCard"));
+        buyTicket.CardNumberButton.sendKeys(ConfigReader.getProperty("senaydaCardNumber"));
+        buyTicket.expirationDateButton.sendKeys(ConfigReader.getProperty("senaydaExpirationDate"));
+        buyTicket.cvcButton.sendKeys(ConfigReader.getProperty("senaydaCvcCode"));
     }
 
     @And("User submits the payment.")
     public void userSubmitsThePayment() {
+        javascriptExecutor.executeScript("arguments[0].scrollIntoView();",
+                buyTicket.stripePaymentPayButton);
+        buyTicket.stripePaymentPayButton.click();
     }
 
     @And("User ensures the payment confirmation or success message is displayed.")
     public void userEnsuresThePaymentConfirmationOrSuccessMessageIsDisplayed() {
+        Assert.assertTrue(buyTicket.ticketInformationTable.isDisplayed());
     }
 
     @And("After successful payment, User verifies that ticket details are displayed.")
     public void afterSuccessfulPaymentUserVerifiesThatTicketDetailsAreDisplayed() {
+        Assert.assertTrue(buyTicket.ticketInformationTable.isDisplayed());
     }
 
     @And("User confirms the accuracy of the ticket information.")
     public void userConfirmsTheAccuracyOfTheTicketInformation() {
+        Assert.assertTrue(buyTicket.ticketInformationTable.isDisplayed());
     }
 
     @And("User ensures the purchased ticket is listed.")
     public void userEnsuresThePurchasedTicketIsListed() {
+        Assert.assertTrue(buyTicket.ticketStatus.isDisplayed());
     }
 
     @And("User clicks on the Print Ticket button next to the purchased ticket.")
     public void userClicksOnThePrintTicketButtonNextToThePurchasedTicket() {
+        buyTicket.printTicketButton.click();
     }
 
     @Then("User verifies redirection to the ticket printing page and ensure the ticket details are correct.")
     public void userVerifiesRedirectionToTheTicketPrintingPageAndEnsureTheTicketDetailsAreCorrect() {
+        actualUrl = Driver.getDriver().getCurrentUrl();
+        expectedUrl = "https://qa.easybusticket.com/user/booked-ticket/print";
+        softAssert.assertTrue(actualUrl.contains(expectedUrl), "User DID NOT display the 'Print' page!");
+    }
+    @Then("User Download and verify the ticket.")
+    public void userDownloadAndVerifyTheTicket() {
+        buyTicket.printTicketButton.click();
+        Assert.assertTrue(buyTicket.printTicketButton.isDisplayed());
     }
 
     @Then("Click on the {string} button on the header.")
