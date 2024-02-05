@@ -60,13 +60,13 @@ public class AdminDashboard {
     @FindBy(xpath = "//*[text()='Total Email Unverified Users']")
     public WebElement TotalEmailUnverifiedUsers;
 
-    @FindBy(xpath = "(//*[text()='View All'])[3]")
+    @FindBy(xpath = "(//*[@class='menu-title'])[6]")
     public WebElement ViewAllTotalEmailUnverifiedUsers;
 
     @FindBy(xpath = "//*[text()='Total SMS Unverified Users']")
     public WebElement TotalSMUnverifiedUsers;
 
-    @FindBy(xpath = "(//*[text()='View All'])[4]")
+    @FindBy(xpath = "(//*[@class='menu-title'])[7]")
     public WebElement ViewAllTotalSMSUnverifiedUsers;
 
     @FindBy(xpath = "(//*[text()='Successful Payment'])[1]")

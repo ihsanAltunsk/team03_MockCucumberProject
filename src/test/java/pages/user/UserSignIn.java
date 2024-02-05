@@ -9,6 +9,9 @@ public class UserSignIn {
     public UserSignIn(){
         PageFactory.initElements(Driver.getDriver(),this);}
 
+    @FindBy(xpath = "//a[@href='https://qa.easybusticket.com/login']")
+    public WebElement signin;
+
     @FindBy(id = "username")
     public WebElement usernameBox;
 
