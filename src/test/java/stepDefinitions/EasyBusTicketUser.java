@@ -36,9 +36,9 @@ public class EasyBusTicketUser {
     UserDashboard userDashboard = new UserDashboard();
     BuyTicket buyTicket = new BuyTicket();
     VisitorContact visitorContact =new VisitorContact();
-
     SupportRequests supportRequests=new SupportRequests();
-  
+    UserSignIn signInLoc = new UserSignIn();
+    BookingHistory locator = new BookingHistory();
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
         Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
@@ -698,7 +698,6 @@ public class EasyBusTicketUser {
         supportRequests.newTicketButton.click();
     }
 
-
     @Then("User clicks on Subject box and enter his-her message {string}")
     public void userClicksOnSubjectBoxAndEnterHisHerMessage(String message) {
         supportRequests.subjectBox.click();
@@ -727,14 +726,31 @@ public class EasyBusTicketUser {
                 "\\Downloads\\Common_Interview_Questions_.pdf";
         supportRequests.dosyaSecBox.sendKeys(dynamicFilePath);
     }
+  
     @Then("User clicks on Submit button")
     public void userClicksOnSubmitButton() {
         supportRequests.submitButton.click();
     }
+  
     @Then("Verify that Support ticket is created successfully is displayed")
     public void verifyThatSupportTicketIsCreatedSuccessfullyIsDisplayed() {
         String expectedText="Support ticket created successfully!";
         String actualText=supportRequests.alertMessage.getText();
         softAssert.assertEquals(actualText,expectedText);
+    }
+
+    @Then("User enters credentials, then clicks Log In Button.")
+    public void user_enters_credentials_then_clicks_log_ın_button() {
+        signInLoc.signin.click();
+        signInLoc.usernameBox.sendKeys(ConfigReader.getProperty("burcuUsername"));
+        signInLoc.passwordBox.sendKeys(ConfigReader.getProperty("burcudurakPassword"));
+        signInLoc.checkBoxRememberMe.click();
+        signInLoc.loginButton.click();
+    }
+  
+    @Then("User must click on header booking button.")
+    public void user_must_click_on_header_booking_button() {
+        locator.HeaderBooking.click();
+
     }
 }
