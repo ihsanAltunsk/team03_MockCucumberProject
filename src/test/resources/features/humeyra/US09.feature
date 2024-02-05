@@ -1,4 +1,5 @@
 Feature: US09 User can not register invalid information
+
   Scenario Outline: : TC01 User cannot register invalid password
      Given  User goes to the easybusticket homepage.
     Then User clicks on Sign up button
@@ -13,12 +14,12 @@ Feature: US09 User can not register invalid information
     Then User clicks on confirm password box and enter password "<givenConfirmPasswords>"
     Then User clicks on Accepting all checkbox
     Then User clicks on sign Up button
-    Then Verify that user can't register
+    Then Verify that user can't register "<givenAlert>"
 
     Examples:
-    |givenInvalidPasswords         |givenConfirmPasswords               |
-    |humeyraSignUpInvalidPassword1|humeyraSignUpConfirmInvalidPassword1 |
-    |humeyraSignUpInvalidPassword2|humeyraSignUpConfirmInvalidPassword2 |
-    |humeyraSignUpInvalidPassword3|humeyraSignUpConfirmInvalidPassword3 |
-    |humeyraSignUpInvalidPassword4|humeyraSignUpConfirmInvalidPassword4 |
+    |givenInvalidPasswords        |givenConfirmPasswords                |givenAlert   |
+    |humeyraSignUpInvalidPassword1|humeyraSignUpConfirmInvalidPassword1 |humeyraAlert1|
+    |humeyraSignUpInvalidPassword2|humeyraSignUpConfirmInvalidPassword2 |humeyraAlert2|
+    |humeyraSignUpInvalidPassword3|humeyraSignUpConfirmInvalidPassword3 |humeyraAlert3|
+    |humeyraSignUpInvalidPassword4|humeyraSignUpConfirmInvalidPassword4 |humeyraAlert4|
 

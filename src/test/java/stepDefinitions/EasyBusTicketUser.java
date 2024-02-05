@@ -3,6 +3,7 @@ package stepDefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
@@ -35,6 +36,7 @@ public class EasyBusTicketUser {
     UserDashboard userDashboard = new UserDashboard();
     BuyTicket buyTicket = new BuyTicket();
     VisitorContact visitorContact =new VisitorContact();
+    SupportRequests supportRequests=new SupportRequests();
     UserSignIn signInLoc = new UserSignIn();
     BookingHistory locator = new BookingHistory();
     @Given("User goes to the easybusticket homepage.")
@@ -217,7 +219,7 @@ public class EasyBusTicketUser {
 
     @Then("Verify that user can't register {string}")
     public void verifyThatUserCanTRegister(String alert) {
-        expectedError = alert;
+        expectedError = ConfigReader.getProperty(alert);
         actualError = userSignUp.alert.getText();
         softAssert.assertEquals(expectedError, actualError, "user can register3");
     }
@@ -675,6 +677,67 @@ public class EasyBusTicketUser {
         softAssert.assertEquals(actualText, expectedText, "'The password confirmation does not match.' text DID NOT appear!");
     }
 
+    @Then("User click on Support Request link and chooses Requests link")
+    public void userClickOnSupportRequestLinkAndChoosesRequestsLink() {
+        supportRequests.supportRequestLink.click();
+        supportRequests.requestLink.click();
+    }
+
+    @Then("User clicks on Action button")
+    public void userClicksOnActionButton() {
+        supportRequests.actionButton.click();
+    }
+
+    @Then("Verify that the details of each past request are visible")
+    public void verifyThatTheDetailsOfEachPastRequestAreVisible() {
+        softAssert.assertTrue(supportRequests.labelRequestMessage.isDisplayed());
+    }
+
+    @Then("User click on New Ticket button")
+    public void userClickOnNewTicketButton() {
+        supportRequests.newTicketButton.click();
+    }
+
+    @Then("User clicks on Subject box and enter his-her message {string}")
+    public void userClicksOnSubjectBoxAndEnterHisHerMessage(String message) {
+        supportRequests.subjectBox.click();
+        supportRequests.subjectBox.sendKeys(ConfigReader.getProperty(message));
+    }
+
+    @Then("User click on priority dropdown and choose one")
+    public void userClickOnPriorityDropdownAndChooseOne() {
+        Select select=new Select(supportRequests.priorityBox);
+        select.selectByValue("2");
+    }
+
+    @Then("User clicks on message button and enter her-his message {string}")
+    public void userClicksOnMessageButtonAndEnterHerHisMessage(String message) {
+        supportRequests.messageBox.click();
+        supportRequests.messageBox.sendKeys(ConfigReader.getProperty(message));
+    }
+
+    @Then("User clicks on Dosya Sec button and selects a valid file from her-his folder according to allowed file extensions")
+    public void userClicksOnDosyaSecButtonAndSelectsAValidFileFromHerHisFolderAccordingToAllowedFileExtensions() {
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) Driver.getDriver();
+        ReusableMethods.bekle(1);
+        javascriptExecutor.executeScript("arguments[0].scrollIntoView();",supportRequests.dosyaSecBox);
+        ReusableMethods.bekle(1);
+        String dynamicFilePath = System.getProperty("user.home") +
+                "\\Downloads\\Common_Interview_Questions_.pdf";
+        supportRequests.dosyaSecBox.sendKeys(dynamicFilePath);
+    }
+  
+    @Then("User clicks on Submit button")
+    public void userClicksOnSubmitButton() {
+        supportRequests.submitButton.click();
+    }
+  
+    @Then("Verify that Support ticket is created successfully is displayed")
+    public void verifyThatSupportTicketIsCreatedSuccessfullyIsDisplayed() {
+        String expectedText="Support ticket created successfully!";
+        String actualText=supportRequests.alertMessage.getText();
+        softAssert.assertEquals(actualText,expectedText);
+    }
 
     @Then("User enters credentials, then clicks Log In Button.")
     public void user_enters_credentials_then_clicks_log_ın_button() {
@@ -684,13 +747,10 @@ public class EasyBusTicketUser {
         signInLoc.checkBoxRememberMe.click();
         signInLoc.loginButton.click();
     }
+  
     @Then("User must click on header booking button.")
     public void user_must_click_on_header_booking_button() {
         locator.HeaderBooking.click();
 
     }
-
-
-
-
 }
