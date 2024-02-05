@@ -31,7 +31,6 @@ public class EasyBusTicketAdmin {
     AssignedVehicle assignedVehicle = new AssignedVehicle();
     AutomaticGateways automaticGateways = new AutomaticGateways();
     ManuelGateways manuelGateways = new ManuelGateways();
-    AdminSignIn signInLoc = new AdminSignIn();
 
     @Given("Admin goes to the -qa.easybusticket.com admin-")
     public void adminGoesToTheQaEasybusticketComAdmin() {
@@ -781,9 +780,9 @@ public class EasyBusTicketAdmin {
     @Then("User displays the {string} page.")
     public void user_displays_the_page(String string) {
 
-        signInLoc.usernameBox.sendKeys(ConfigReader.getProperty("burcuAdminUsername"));
-        signInLoc.passwordBox.sendKeys(ConfigReader.getProperty("burcuAdminPassword"));
-        signInLoc.loginButton.click();
+        adminSignIn.usernameBox.sendKeys(ConfigReader.getProperty("burcuAdminUsername"));
+        adminSignIn.passwordBox.sendKeys(ConfigReader.getProperty("burcuAdminPassword"));
+        adminSignIn.loginButton.click();
     }
   
     @Then("User clicks on View All button for Total Users.")
@@ -811,5 +810,3 @@ public class EasyBusTicketAdmin {
         adminDashboard.ManageUsers.isDisplayed();
     }
 }
-
-
