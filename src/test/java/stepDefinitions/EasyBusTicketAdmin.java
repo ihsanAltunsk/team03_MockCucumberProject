@@ -26,7 +26,7 @@ public class EasyBusTicketAdmin {
     TicketPrice ticketPrice = new TicketPrice();
     Trip trip = new Trip();
     AssignedVehicle assignedVehicle = new AssignedVehicle();
-
+    AdminSignIn signInLoc = new AdminSignIn();
     @Given("Admin goes to the -qa.easybusticket.com admin-")
     public void adminGoesToTheQaEasybusticketComAdmin() {
         Driver.getDriver().get(ConfigReader.getProperty("adminUrl"));
@@ -721,4 +721,38 @@ public class EasyBusTicketAdmin {
         expectedUpdate = ConfigReader.getProperty("ihsanUpdatedTripName");
         softAssert.assertEquals(actualUpdate, expectedUpdate, "'Vehicle' IS NOT updated!");
     }
+
+
+    @Then("User displays the {string} page.")
+    public void user_displays_the_page(String string) {
+
+        signInLoc.usernameBox.sendKeys(ConfigReader.getProperty("burcuAdminUsername"));
+        signInLoc.passwordBox.sendKeys(ConfigReader.getProperty("burcuAdminPassword"));
+        signInLoc.loginButton.click();
+    }
+    @Then("User clicks on View All button for Total Users.")
+    public void user_clicks_on_view_all_button_for_total_users() {
+        adminDashboard.ViewAllTotalUsers.click();
+    }
+    @Then("User displays Manage Users page.")
+    public void user_displays_manage_users_page() {
+        adminDashboard.ManageUsers.isDisplayed();
+    }
+    @Then("User clicks on View All button for TotalEmailUnverifiedUsers.")
+    public void user_clicks_on_view_all_button_for_total_email_unverified_users() {
+        adminDashboard.ViewAllTotalEmailUnverifiedUsers.click();
+    }
+    @Then("User clicks on View All button for TotalSMSUnverifiedUsers.")
+    public void user_clicks_on_view_all_button_for_total_sms_unverified_users() {
+        adminDashboard.ViewAllTotalSMSUnverifiedUsers.click();
+    }
+    @Then("User displays {string} page.")
+    public void user_displays_page(String string) {
+        adminDashboard.ManageUsers.isDisplayed();
+    }
+
+
+
 }
+
+

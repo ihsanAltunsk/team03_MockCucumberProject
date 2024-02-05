@@ -14,10 +14,7 @@ import pages.admin.AdminDashboard;
 import pages.admin.AdminSignIn;
 import pages.user.UserSignIn;
 import pages.user.UserSignUp;
-import pages.user.registeredUser.BuyTicket;
-import pages.user.registeredUser.ChangePassword;
-import pages.user.registeredUser.Profile;
-import pages.user.registeredUser.UserDashboard;
+import pages.user.registeredUser.*;
 import pages.visitor.VisitorAbout;
 import pages.visitor.VisitorContact;
 import pages.visitor.VisitorHomePage;
@@ -38,7 +35,8 @@ public class EasyBusTicketUser {
     UserDashboard userDashboard = new UserDashboard();
     BuyTicket buyTicket = new BuyTicket();
     VisitorContact visitorContact =new VisitorContact();
-  
+    UserSignIn signInLoc = new UserSignIn();
+    BookingHistory locator = new BookingHistory();
     @Given("User goes to the easybusticket homepage.")
     public void userGoesToTheHomepage() {
         Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
@@ -676,4 +674,23 @@ public class EasyBusTicketUser {
         expectedText = ConfigReader.getProperty(error);
         softAssert.assertEquals(actualText, expectedText, "'The password confirmation does not match.' text DID NOT appear!");
     }
+
+
+    @Then("User enters credentials, then clicks Log In Button.")
+    public void user_enters_credentials_then_clicks_log_ın_button() {
+        signInLoc.signin.click();
+        signInLoc.usernameBox.sendKeys(ConfigReader.getProperty("burcuUsername"));
+        signInLoc.passwordBox.sendKeys(ConfigReader.getProperty("burcudurakPassword"));
+        signInLoc.checkBoxRememberMe.click();
+        signInLoc.loginButton.click();
+    }
+    @Then("User must click on header booking button.")
+    public void user_must_click_on_header_booking_button() {
+        locator.HeaderBooking.click();
+
+    }
+
+
+
+
 }
