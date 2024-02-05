@@ -4,10 +4,13 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import pages.admin.AdminDashboard;
 import pages.admin.AdminSignIn;
 import pages.admin.manageTrips.*;
+import pages.admin.paymentGateways.AutomaticGateways;
+import pages.admin.paymentGateways.ManuelGateways;
 import utilities.ConfigReader;
 import utilities.Driver;
 import utilities.ReusableMethods;
@@ -26,7 +29,10 @@ public class EasyBusTicketAdmin {
     TicketPrice ticketPrice = new TicketPrice();
     Trip trip = new Trip();
     AssignedVehicle assignedVehicle = new AssignedVehicle();
+    AutomaticGateways automaticGateways = new AutomaticGateways();
+    ManuelGateways manuelGateways = new ManuelGateways();
     AdminSignIn signInLoc = new AdminSignIn();
+
     @Given("Admin goes to the -qa.easybusticket.com admin-")
     public void adminGoesToTheQaEasybusticketComAdmin() {
         Driver.getDriver().get(ConfigReader.getProperty("adminUrl"));
@@ -232,6 +238,7 @@ public class EasyBusTicketAdmin {
         expectedText = "Schedule save successfully";
         softAssert.assertEquals(actualText, expectedText, "'Schedule save successfully' DID NOT appear!");
     }
+
     @And("User verifies that the schedule is added.")
     public void userVerifiesThatTheScheduleIsAdded() {
         actualAddition = schedule.newScheduleElement.getText();
@@ -249,7 +256,7 @@ public class EasyBusTicketAdmin {
     public void userDisplaysTicketPricePage() {
         actualUrl = Driver.getDriver().getCurrentUrl();
         expectedUrl = "https://qa.easybusticket.com/admin/manage/ticket-price";
-        softAssert.assertEquals(actualUrl,expectedUrl, "User DID NOT display the 'Ticket Price' page!");
+        softAssert.assertEquals(actualUrl, expectedUrl, "User DID NOT display the 'Ticket Price' page!");
     }
 
     @And("User clicks Ticket Price -Add New- button.")
@@ -449,16 +456,16 @@ public class EasyBusTicketAdmin {
     @And("User verifies that new vehicle is added.")
     public void userVerifiesThatNewVehicleIsAdded() {
         actualAddition = assignedVehicle.newTripElement.getText();
-        if (actualAddition.equals(tripText)){
+        if (actualAddition.equals(tripText)) {
             System.out.println("New Vehicle added!");
-        }else {
+        } else {
             softAssert.assertEquals(actualAddition, tripText, "New 'Vehicle' DID NOT add!");
         }
     }
 
     @And("User clicks on -Disable Route- button for the added route.")
     public void userClicksOnDisableRouteButtonForTheAddedRoute() {
-        routeName =route.newRouteElement.getText();
+        routeName = route.newRouteElement.getText();
         route.disableButton.click();
     }
 
@@ -577,7 +584,7 @@ public class EasyBusTicketAdmin {
 
     @And("User verifies -Ticket Price- has been deleted.")
     public void userVerifiesTicketPriceHasBeenDeleted() {
-        softAssert.assertFalse(routeName.equals(ticketPrice.routeName.getText()),"'Ticket Price' IS NOT deleted.");
+        softAssert.assertFalse(routeName.equals(ticketPrice.routeName.getText()), "'Ticket Price' IS NOT deleted.");
     }
 
     @Then("User clicks on -Edit- button for the added ticket price.")
@@ -722,6 +729,54 @@ public class EasyBusTicketAdmin {
         softAssert.assertEquals(actualUpdate, expectedUpdate, "'Vehicle' IS NOT updated!");
     }
 
+    @Given("User verify the presence of the Payment Gateways menu and its sub-menus.")
+    public void userVerifyThePresenceOfThePaymentGatewaysMenuAndItsSubMenus() {
+        automaticGateways.paymentGateWaysMenu.click();
+        Assert.assertTrue(automaticGateways.paymentGateWaysMenu.isDisplayed());
+    }
+
+    @Then("User click on the link associated with Automatic Gateways under the Payment Gateways menu")
+    public void userClickOnTheLinkAssociatedWith() {
+        automaticGateways.automaticGatewaysLink.click();
+    }
+
+    @And("User displays Automatic Gateways page")
+    public void userDisplaysAutomaticGatewaysPage() {
+        Assert.assertTrue(automaticGateways.automaticGatewaysPage.isDisplayed());
+    }
+
+    @Then("User click on the link associated with Manuel Gateways under the Payment Gateways menu")
+    public void userClickOnTheLinkAssociatedWithManuelGatewaysUnderThePaymentGatewaysMenu() {
+        manuelGateways.manuelGatewaysLink.click();
+    }
+
+    @And("User displays Manuel Gateways page")
+    public void userDisplaysManuelGatewaysPage() {
+        Assert.assertTrue(manuelGateways.manuelGatewaysLink.isDisplayed());
+    }
+
+    @And("User click Add new button")
+    public void userClickAddNewButton() {
+        manuelGateways.addNewButton.click();
+    }
+
+    @And("User enters Gateway Name {string}")
+    public void userEntersGatewayName(String GatewayName) {
+        manuelGateways.gatewayNameColumn.click();
+        manuelGateways.gatewayNameColumn.sendKeys(ConfigReader.getProperty(GatewayName));
+    }
+
+    @And("User enters {string}")
+    public void userEnters(String currency) {
+        manuelGateways.currencyColumn.click();
+        manuelGateways.currencyColumn.sendKeys(ConfigReader.getProperty(currency));
+    }
+
+    @And("User enters Rate {string}")
+    public void userEntersRate(String rate) {
+        manuelGateways.rateColumn.click();
+        manuelGateways.rateColumn.sendKeys(ConfigReader.getProperty(rate));
+    }
 
     @Then("User displays the {string} page.")
     public void user_displays_the_page(String string) {
@@ -730,29 +785,31 @@ public class EasyBusTicketAdmin {
         signInLoc.passwordBox.sendKeys(ConfigReader.getProperty("burcuAdminPassword"));
         signInLoc.loginButton.click();
     }
+  
     @Then("User clicks on View All button for Total Users.")
     public void user_clicks_on_view_all_button_for_total_users() {
         adminDashboard.ViewAllTotalUsers.click();
     }
+  
     @Then("User displays Manage Users page.")
     public void user_displays_manage_users_page() {
         adminDashboard.ManageUsers.isDisplayed();
     }
+  
     @Then("User clicks on View All button for TotalEmailUnverifiedUsers.")
     public void user_clicks_on_view_all_button_for_total_email_unverified_users() {
         adminDashboard.ViewAllTotalEmailUnverifiedUsers.click();
     }
+  
     @Then("User clicks on View All button for TotalSMSUnverifiedUsers.")
     public void user_clicks_on_view_all_button_for_total_sms_unverified_users() {
         adminDashboard.ViewAllTotalSMSUnverifiedUsers.click();
     }
+  
     @Then("User displays {string} page.")
     public void user_displays_page(String string) {
         adminDashboard.ManageUsers.isDisplayed();
     }
-
-
-
 }
 
 
