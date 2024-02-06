@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import pages.admin.AdminDashboard;
 import pages.admin.AdminSignIn;
+import pages.admin.counter.Counter;
 import pages.admin.manageTrips.*;
 import pages.admin.paymentGateways.AutomaticGateways;
 import pages.admin.paymentGateways.ManuelGateways;
@@ -31,7 +32,7 @@ public class EasyBusTicketAdmin {
     AssignedVehicle assignedVehicle = new AssignedVehicle();
     AutomaticGateways automaticGateways = new AutomaticGateways();
     ManuelGateways manuelGateways = new ManuelGateways();
-
+    Counter counter=new Counter();
     @Given("Admin goes to the -qa.easybusticket.com admin-")
     public void adminGoesToTheQaEasybusticketComAdmin() {
         Driver.getDriver().get(ConfigReader.getProperty("adminUrl"));
@@ -809,4 +810,49 @@ public class EasyBusTicketAdmin {
     public void user_displays_page(String string) {
         adminDashboard.ManageUsers.isDisplayed();
     }
+
+    @And("Admin should be able to see the counter link in the trasport manager menu in the left menu on the dashboard page.")
+    public void adminShouldBeAbleToSeeTheCounterLinkInTheTrasportManagerMenuInTheLeftMenuOnTheDashboardPage() {
+        adminDashboard.Counter.click();
+    }
+
+    @Then("Admin clicks on add new button")
+    public void admin_clicks_on_add_new_button() {
+
+        adminDashboard.AddNewDashboard.click();
+    }
+
+    @And("Add counter  username is added")
+    public void addCounterUsernameIsAdded() {
+        counter.AddNewName.sendKeys(ConfigReader.getProperty("Name"));
+    }
+
+    @And("The city name is added to the counter")
+    public void theCityNameIsAddedToTheCounter() {
+        counter. AddNewCity.sendKeys(ConfigReader.getProperty("City"));
+    }
+
+    @And("The counter should be added to the location.")
+    public void theCounterShouldBeAddedToTheLocation() {
+        counter.AddNewEnterLocation.sendKeys(ConfigReader.getProperty("Location"));
+
+    }
+
+    @And("A phone number must be added to the meter")
+    public void aPhoneNumberMustBeAddedToTheMeter() {
+        counter. AddNewEnterCounterContactNumber.sendKeys(ConfigReader.getProperty("Mobile"));
+
+    }
+
+    @And("Admin clicks on  counter.")
+    public void adminClicksOnCounter() {
+        counter.AddNewSave.click();
+
+    }
+
+    @And("Admin  verfies that new added counter is visible.")
+    public void adminVerfiesThatNewAddedCounterIsVisible() {
+        counter.AddNew.isDisplayed();
+    }
+
 }
